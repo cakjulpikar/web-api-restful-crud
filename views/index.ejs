@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Memo Portofolio</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Memo Portofolio</h1>
+    <form action="/" method="post">
+      <input type="text" name="creator_name" placeholder="Type your name here">
+      <input type="text" name="content" placeholder="Type your memo here">
+      <button type="submit" name="button"> Create Memo </button>
+    </form>
+    <table>
+      <tr>
+        <th> Creator Name </th>
+        <th> Content </th>
+        <th> Delete </th>
+        <th> Update Content </th>
+      </tr>
+      <% memos.forEach(function(memo){%>
+        <tr>
+          <td> <%= memo.creator_name %> </td>
+          <td> <%= memo.content %> </td>
+          <td></td>
+        </tr>
+      <% }) %>
+    </table>
+  </body>
+</html>
