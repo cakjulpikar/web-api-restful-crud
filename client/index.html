@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple Memo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" id="bulma" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.2/css/bulma.min.css">
+  </head>
+  <body>
+    <div id="app">
+      <div class="container section">
+        <div class="columns gallery">
+          <div class="column is-3" v-for="memo in list_memo">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                  A Memo
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  {{memo.content}}
+                  <small>
+                    Created by {{memo.creator_name}}
+                  </small>
+                </div>
+              </div>
+              <footer class="card-footer">
+                <a href="#" class="card-footer-item"> Delete </a>
+                <a href="#" class="card-footer-item"> Update </a>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var app = new Vue({
+      el : '#app',
+      data : {
+        list_memo : []
+      },
+      created : function() {
+        var self = this;
+        axios.get('http://localhost:3000/api/memo')
+        .then(function(res) {
+          self.list_memo = res.data
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+      }
+    })
+  </script>
+</html>
