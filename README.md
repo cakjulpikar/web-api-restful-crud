@@ -13,6 +13,9 @@ npm start
 ````
 live-server
 ````
+#### Client Side Preview
+
+Please refer to client/preview to see preview on client side
 
 #### API Routes
 
