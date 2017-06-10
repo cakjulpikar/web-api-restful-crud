@@ -49,7 +49,7 @@
               </div>
               <footer class="card-footer">
                 <a href="#" class="card-footer-item" @click="konfirmDeleteMemo(memo._id)"> Delete </a>
-                <a href="#" class="card-footer-item"> Update </a>
+                <a href="#" class="card-footer-item" @click='updateMemoModal(memo.creator_name,memo.content,memo._id)'> Update </a>
               </footer>
             </div>
           </div>
@@ -90,6 +90,42 @@
         </div>
       </div>
       <!-- Modal Delete Memo End  -->
+
+      <!-- Modal Update Memo Begin -->
+      <div :class="modalUpdateMemo">
+        <div class="modal-background">
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">
+                Update memo
+              </p>
+            </header>
+            <section class="modal-card-body">
+              <div class="field">
+                <label class="label">
+                  Creator Name
+                </label>
+                <p class="control">
+                  <input class="input" type="text" name="creator_name" v-model="updated_creator_name">
+                </p>
+              </div>
+              <div class="field">
+                <label class="label">
+                  Memo
+                </label>
+                <p class="control">
+                  <textarea name="memo" rows="5" cols="73" v-model="updated_content"></textarea>
+                </p>
+              </div>
+            </section>
+            <footer class="modal-card-foot">
+              <button type="button" class="button is-success" name="buttonupdateMemo" @click="updateMemo"> Update Memo </button>
+              <button @click="closeModal" type="button" name="cancelMemo" class="button is-link"> Cancel </button>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <!-- Modal Update Memo End -->
     </div>
   </body>
 
@@ -99,8 +135,12 @@
       data : {
         list_memo: [],
         modalAddMemo: 'modal',
+        modalUpdateMemo: 'modal',
         creator_name: '',
-        content: ''
+        content: '',
+        updated_creator_name: '',
+        updated_content: '',
+        updated_memo_id: ''
       },
       created : function() {
         var self = this;
@@ -116,8 +156,15 @@
         addMemoModal: function () {
           this.modalAddMemo = "modal is-active"
         },
+        updateMemoModal: function (creator_name,content,memo_id) {
+          this.modalUpdateMemo = "modal is-active"
+          this.updated_creator_name = creator_name
+          this.updated_content = content
+          this.updated_memo_id = memo_id
+        },
         closeModal: function () {
           this.modalAddMemo = "modal"
+          this.modalUpdateMemo = "modal"
         },
         konfirmDeleteMemo: function (memoId) {
           var confirmDelete = confirm("Are you sure to delete this memo ?")
@@ -137,7 +184,19 @@
           .then(function (res) {
             this.creator_name = ''
             this.content = ''
-            window.location.href = "/";
+            window.location.href = "/"
+          })
+        },
+        updateMemo: function () {
+          updatedMemo = {
+            content : this.updated_content
+          }
+          axios.patch(`http://localhost:3000/api/memo/${this.updated_memo_id}`,updatedMemo)
+          .then(function () {
+            this.updated_memo_id = ''
+            this.updated_creator_name = ''
+            this.updated_content = ''
+            window.location.href = "/"
           })
         }
       }
